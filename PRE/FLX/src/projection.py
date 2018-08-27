@@ -14,7 +14,7 @@ from CSVMatriz import*
 from disolver import*
 
 
-def projection(flows, projections, Year,id):
+def projection(flows, projections, Year, id):
 
 	Mflows = convertCSVMatriz(flows)
 	MProjections = convertXLSCSV(projections)
@@ -60,16 +60,16 @@ def projection(flows, projections, Year,id):
 
 
 		if flows[key]['Tipo'][Tipo]['Estacion'] == []:
-		 	flows[key]['Tipo'][Tipo]['Estacion'].append(Mflows[i][colEstation])
-		 	flows[key]['Tipo'][Tipo]['IDNodo'].append(Mflows[i][colIDNodo])
+			flows[key]['Tipo'][Tipo]['Estacion'].append(Mflows[i][colEstation])
+			flows[key]['Tipo'][Tipo]['IDNodo'].append(Mflows[i][colIDNodo])
 
 		entryhour = flows[key]['Tipo'][Tipo]['hour']
 
 		if entryhour.get(hour) is None:
-		 	entryhour[hour] = {}
+			entryhour[hour] = {}
 
 		entryflows = entryhour[hour]
-		if id == 1:
+		if id == 'MOB':
 			colend = Mflows.shape[1]
 		else:
 			colend = Mflows.shape[1]-1
@@ -98,30 +98,32 @@ def projection(flows, projections, Year,id):
 	writeprojections(flows, id, Year)
 
 def writeprojections(data, id, Year):
-
+	#print id
 	folder = os.path.join('..', 'data','out', '')
 	keys = data.keys()
-	if id == 0:
+	
+	if id == 'RPM':
 		csvsalida = open(folder + 'RPM' + '_' + Year + '.csv', 'w')
 		names = ['Estacion','Tipo','IDEstacion','IDNodo', 'hora', '>C5', 'AL', 'AT', 'B', 'BA', 'BT', 'C', 'C2G', 'C2P', 'C3-C4', 'C5', 'ESP', 'INT', 'L', 'M', 'TOTAL']
-		#print data
-
-	elif id == 1:
+	
+	elif id == 'MOB':
 		csvsalida = open(folder + 'MOB' + '_' + Year + '.csv', 'w')
-		#names1 = ['Estacion', 'Tipo', 'IDEstacion', 'IDNodo', 'hora', '>C5_Dsel', '>C5_GNV', '>C5_Gas', 'AL_Dsel', 'AT_Dsel', 'AUT_GNV', 'AUT_Gas', 'BA_Dsel', 'BT_Dsel', 'B_Dsel', 'C2G_Dsel', 'C2G_GNV', 'C2G_Gas', 'C2P_Dsel', 'C2P_GNV', 'C2P_Gas', 'C3-C4_Dsel', 'C3-C4_GNV', 'C3-C4_Gas', 'CC_Dsel', 'CC_GNV', 'CC_Gas', 'ESP_Dsel', 'ESP_GNV', 'ESP_Gas', 'INT_Dsel', 'INT_GNV', 'INT_Gas', 'MB_Dsel', 'M_Gas', 'TX_GNV', 'TX_Gas', 'C5_Dsel', 'C5_GNV', 'C5_Gas']
 		names1 = ['Estacion', 'Tipo', 'IDEstacion', 'IDNodo', 'hora',]
+		
 		if ('HABIL' in data[keys[0]]['Tipo']):
 			names2 = sorted(data[keys[0]]['Tipo']['HABIL']['hour'][0])
 		else: 
 			names2 = sorted(data[keys[0]]['Tipo']['NOHAB']['hour'][0])
 		names = names1 + names2
-		for name in names:
-			if name == names[0]:
-				csvsalida.write(name)
-			else:
-				csvsalida.write(',')
-				csvsalida.write(name)
-		csvsalida.write('\n')
+
+	for name in names:
+		if name == names[0]:
+			csvsalida.write(name)
+		else:
+			csvsalida.write(',')
+			csvsalida.write(name)
+	
+	csvsalida.write('\n')
 
 	keys = data.keys()
 	for key in keys:

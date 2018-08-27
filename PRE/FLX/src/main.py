@@ -23,7 +23,7 @@ folder = os.path.join('..', 'data','out', '')
 clear(folder)
 
 print ('Init process flows')
-folder = os.path.join('..', 'data', 'in', 'Flows', '')
+folder = os.path.join('..', 'data', 'in', 'Flows2', '')
 
 listaExcel (folder)
 listaCSV(folder, Year)
@@ -34,8 +34,8 @@ disolver(flows, category, Year)
 
 #flows = os.path.join('..', 'data', 'out', 'RPM.csv')
 projections = os.path.join('..', 'data','in', 'Projection', 'Resuspended_grow_factors.xlsx')
-projection(flows, projections, YearProjection , 0)
+projection(flows, projections, YearProjection , 'RPM')
 
 flows = os.path.join('..', 'data', 'out', 'MOB' + '_' + Year + '.csv')
 projections = os.path.join('..', 'data','in', 'Projection', 'Movile_grow_factors.xlsx')
-projection(flows, projections,YearProjection , 1)
+projection(flows, projections,YearProjection , 'MOB')
